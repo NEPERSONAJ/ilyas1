@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { projects } from '../data';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
@@ -6,6 +6,7 @@ export const Projects: React.FC = () => {
   const [currentProject, setCurrentProject] = useState(projects[0]);
   const [activeTab, setActiveTab] = useState<'project' | 'solution' | 'features' | 'video'>('project');
   const [selectedImage, setSelectedImage] = useState(currentProject.images[0]);
+  const tabsRef = useRef<HTMLDivElement>(null);
 
   const nextProject = () => {
     const currentIndex = projects.findIndex(p => p.id === currentProject.id);
@@ -17,6 +18,16 @@ export const Projects: React.FC = () => {
     const currentIndex = projects.findIndex(p => p.id === currentProject.id);
     setCurrentProject(projects[(currentIndex - 1 + projects.length) % projects.length]);
     setSelectedImage(projects[(currentIndex - 1 + projects.length) % projects.length].images[0]);
+  };
+
+  const scrollTabs = (direction: 'left' | 'right') => {
+    if (tabsRef.current) {
+      const scrollAmount = 200;
+      tabsRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth'
+      });
+    }
   };
 
   return (
@@ -32,16 +43,18 @@ export const Projects: React.FC = () => {
         <div className="relative glass-bg rounded-2xl overflow-hidden border border-slate-700">
           <div className="grid grid-cols-1 lg:grid-cols-2">
             {/* Left side - Images */}
-            <div className="relative group">
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10" />
-              <img
-                src={selectedImage.url}
-                alt={selectedImage.title}
-                className="w-full aspect-video object-cover"
-              />
+            <div>
+              <div className="relative">
+                <img
+                  src={selectedImage.url}
+                  alt={selectedImage.title}
+                  className="w-full aspect-video object-cover"
+                />
+              </div>
               
-              <div className="absolute bottom-0 left-0 right-0 p-6 z-20">
-                <div className="flex gap-3 overflow-x-auto pb-2 md:mt-4">
+              {/* Thumbnails below main image */}
+              <div className="p-6 border-t border-slate-700">
+                <div className="flex gap-3 overflow-x-auto">
                   {currentProject.images.map((image) => (
                     <button
                       key={image.id}
@@ -66,50 +79,69 @@ export const Projects: React.FC = () => {
             <div className="p-8">
               <h3 className="text-3xl font-bold mb-6 text-white">{currentProject.title}</h3>
               
-              {/* Tabs */}
-              <div className="flex gap-6 mb-8 border-b border-slate-700 overflow-x-auto">
+              {/* Tabs with navigation arrows */}
+              <div className="relative">
                 <button
-                  onClick={() => setActiveTab('project')}
-                  className={`pb-3 px-2 text-lg transition-colors whitespace-nowrap ${
-                    activeTab === 'project'
-                      ? 'border-b-2 border-blue-500 text-blue-400'
-                      : 'text-slate-400 hover:text-white'
-                  }`}
+                  onClick={() => scrollTabs('left')}
+                  className="absolute left-0 top-1/2 -translate-y-1/2 bg-slate-800/80 hover:bg-slate-700/80 p-2 rounded-full z-10 md:hidden"
                 >
-                  Проект
+                  <ChevronLeft size={20} className="text-white" />
                 </button>
-                <button
-                  onClick={() => setActiveTab('solution')}
-                  className={`pb-3 px-2 text-lg transition-colors whitespace-nowrap ${
-                    activeTab === 'solution'
-                      ? 'border-b-2 border-blue-500 text-blue-400'
-                      : 'text-slate-400 hover:text-white'
-                  }`}
+                
+                <div 
+                  ref={tabsRef}
+                  className="flex gap-6 mb-8 border-b border-slate-700 overflow-x-auto scrollbar-hide scroll-smooth px-8 md:px-0"
                 >
-                  Решение
-                </button>
-                <button
-                  onClick={() => setActiveTab('features')}
-                  className={`pb-3 px-2 text-lg transition-colors whitespace-nowrap ${
-                    activeTab === 'features'
-                      ? 'border-b-2 border-blue-500 text-blue-400'
-                      : 'text-slate-400 hover:text-white'
-                  }`}
-                >
-                  Об объекте
-                </button>
-                {currentProject.details.video && (
                   <button
-                    onClick={() => setActiveTab('video')}
-                    className={`pb-3 px-2 text-lg transition-colors whitespace-nowrap ${
-                      activeTab === 'video'
+                    onClick={() => setActiveTab('project')}
+                    className={`pb-3 px-2 text-lg transition-colors whitespace-nowrap flex-shrink-0 ${
+                      activeTab === 'project'
                         ? 'border-b-2 border-blue-500 text-blue-400'
                         : 'text-slate-400 hover:text-white'
                     }`}
                   >
-                    Видео
+                    Проект
                   </button>
-                )}
+                  <button
+                    onClick={() => setActiveTab('solution')}
+                    className={`pb-3 px-2 text-lg transition-colors whitespace-nowrap flex-shrink-0 ${
+                      activeTab === 'solution'
+                        ? 'border-b-2 border-blue-500 text-blue-400'
+                        : 'text-slate-400 hover:text-white'
+                    }`}
+                  >
+                    Решение
+                  </button>
+                  <button
+                    onClick={() => setActiveTab('features')}
+                    className={`pb-3 px-2 text-lg transition-colors whitespace-nowrap flex-shrink-0 ${
+                      activeTab === 'features'
+                        ? 'border-b-2 border-blue-500 text-blue-400'
+                        : 'text-slate-400 hover:text-white'
+                    }`}
+                  >
+                    Об объекте
+                  </button>
+                  {currentProject.details.video && (
+                    <button
+                      onClick={() => setActiveTab('video')}
+                      className={`pb-3 px-2 text-lg transition-colors whitespace-nowrap flex-shrink-0 ${
+                        activeTab === 'video'
+                          ? 'border-b-2 border-blue-500 text-blue-400'
+                          : 'text-slate-400 hover:text-white'
+                      }`}
+                    >
+                      Видео
+                    </button>
+                  )}
+                </div>
+                
+                <button
+                  onClick={() => scrollTabs('right')}
+                  className="absolute right-0 top-1/2 -translate-y-1/2 bg-slate-800/80 hover:bg-slate-700/80 p-2 rounded-full z-10 md:hidden"
+                >
+                  <ChevronRight size={20} className="text-white" />
+                </button>
               </div>
               
               {/* Tab content */}
@@ -117,7 +149,7 @@ export const Projects: React.FC = () => {
                 {activeTab === 'project' && (
                   <div className="grid grid-cols-2 gap-6">
                     <div className="bg-slate-800/50 p-4 rounded-xl">
-                      <p className="text-slate-400 mb-1">Вес металлоконструкций</p>
+                      <p className="text-slate-400 mb-1">Вес металла</p>
                       <p className="text-2xl font-semibold text-white">{currentProject.weight} т</p>
                     </div>
                     <div className="bg-slate-800/50 p-4 rounded-xl">
@@ -176,14 +208,14 @@ export const Projects: React.FC = () => {
           {/* Navigation arrows */}
           <button
             onClick={prevProject}
-            className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 p-3 rounded-full backdrop-blur-sm transition-all"
+            className="absolute left-4 top-1/4 -translate-y-1/2 bg-white/10 hover:bg-white/20 p-3 rounded-full backdrop-blur-sm transition-all"
           >
             <ChevronLeft size={24} className="text-white" />
           </button>
           
           <button
             onClick={nextProject}
-            className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 p-3 rounded-full backdrop-blur-sm transition-all"
+            className="absolute right-4 top-1/4 -translate-y-1/2 bg-white/10 hover:bg-white/20 p-3 rounded-full backdrop-blur-sm transition-all"
           >
             <ChevronRight size={24} className="text-white" />
           </button>

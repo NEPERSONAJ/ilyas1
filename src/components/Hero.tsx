@@ -13,8 +13,6 @@ export const Hero: React.FC = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-black/90 via-surface-dark/80 to-surface-dark" />
       </div>
       
-      <div className="absolute top-0 left-0 w-full h-4 construction-border" />
-      
       <div className="relative min-h-screen flex items-center">
         <div className="container mx-auto px-4">
           <div className="flex flex-wrap items-center gap-12">
@@ -39,7 +37,7 @@ export const Hero: React.FC = () => {
                 <span className="text-yellow-400 font-bold">1000 м²</span>.
               </p>
               
-              <div className="animated-border p-[3px] inline-block rounded-lg">
+              <div className="animated-border inline-block">
                 <button className="btn-primary group">
                   <span className="relative z-10 flex items-center">
                     Рассчитать стоимость
@@ -50,25 +48,23 @@ export const Hero: React.FC = () => {
             </div>
             
             <div className="hidden lg:block flex-1 min-w-[320px]">
-              <div className="construction-border rounded-lg p-[3px]">
-                <div className="glass-bg rounded-lg p-8">
-                  <div className="grid grid-cols-2 gap-6">
-                    <div className="text-center">
-                      <div className="text-4xl font-bold text-yellow-400 mb-2">500+</div>
-                      <div className="text-gray-400">Проектов</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-4xl font-bold text-yellow-400 mb-2">9</div>
-                      <div className="text-gray-400">Лет опыта</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-4xl font-bold text-yellow-400 mb-2">100%</div>
-                      <div className="text-gray-400">Гарантия</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-4xl font-bold text-yellow-400 mb-2">24/7</div>
-                      <div className="text-gray-400">Поддержка</div>
-                    </div>
+              <div className="glass-bg rounded-lg p-8">
+                <div className="grid grid-cols-2 gap-6">
+                  <div className="text-center">
+                    <div className="text-4xl font-bold text-yellow-400 mb-2">500+</div>
+                    <div className="text-gray-400">Проектов</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-4xl font-bold text-yellow-400 mb-2">9</div>
+                    <div className="text-gray-400">Лет опыта</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-4xl font-bold text-yellow-400 mb-2">100%</div>
+                    <div className="text-gray-400">Гарантия</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-4xl font-bold text-yellow-400 mb-2">24/7</div>
+                    <div className="text-gray-400">Поддержка</div>
                   </div>
                 </div>
               </div>

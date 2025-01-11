@@ -20,19 +20,8 @@
 }
 
 @layer components {
-  .construction-border {
-    background: repeating-linear-gradient(
-      45deg,
-      #fbbf24,
-      #fbbf24 10px,
-      #000000 10px,
-      #000000 20px
-    );
-    padding: 3px;
-  }
-
   .glass-bg {
-    @apply bg-gray-900/90 backdrop-blur-xl;
+    @apply bg-gray-900/90 backdrop-blur-xl border border-yellow-400/20;
     box-shadow: 0 8px 32px 0 rgba(251, 191, 36, 0.1);
   }
 
@@ -61,19 +50,7 @@
   }
 
   .animated-border {
-    @apply relative;
-  }
-
-  .animated-border::before {
-    content: '';
-    @apply absolute inset-0 bg-gradient-to-r from-yellow-400 via-orange-500 to-yellow-400 -z-10;
-    background-size: 200% 100%;
-    animation: borderAnimation 3s linear infinite;
-  }
-
-  @keyframes borderAnimation {
-    0% { background-position: 0% 0%; }
-    100% { background-position: 200% 0%; }
+    @apply relative rounded-lg border border-yellow-400/20 hover:border-yellow-400/40 transition-colors;
   }
 }
 
